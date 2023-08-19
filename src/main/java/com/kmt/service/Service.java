@@ -32,6 +32,10 @@ public class Service {
         return restaurantRepository.findAll();
     }
 
+    public List<Review> findReviews(Long id) {
+        return reviewRepository.findByRestaurantId(id);
+    }
+
     //평점 가져오기
     public float getRate(Restaurant restaurant) {
         float rate, rateSum = 0;
@@ -89,3 +93,4 @@ public class Service {
         reviewRepository.save(review);
     }
 }
+

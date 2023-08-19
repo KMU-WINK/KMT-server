@@ -1,9 +1,7 @@
 package com.kmt.api;
 
-import com.kmt.dto.RestaurantDTO;
-import com.kmt.dto.RestaurantRegisterReqDto;
-import com.kmt.dto.RestaurantResDto;
-import com.kmt.dto.ReviewReqDto;
+import com.kmt.domain.Review;
+import com.kmt.dto.*;
 import com.kmt.service.Service;
 import io.swagger.annotations.ApiOperation;
 import com.kmt.domain.Restaurant;
@@ -58,5 +56,25 @@ public class ApiController {
     @PostMapping("/review")
     public void postReview(@RequestBody final ReviewReqDto reviewReqDto) {
         service.postReview(reviewReqDto);
+    }
+    @GetMapping("/restaurant/{id}/reviews")
+    public List<ReviewDto> reviewList(@PathVariable("id") Long id) {
+
+        List<ReviewDto> reviewDtoList = new ArrayList<>();
+
+        List<Review> reviews = service.findReviews(id);
+
+        for (Review review : reviews) {
+            ReviewDto reviewDto = new ReviewDto(
+                    review.getId(),
+                    review.getRate(),
+                    review.getComment(),
+                    review.getDeliveryTime()
+            );
+
+            reviewDtoList.add(reviewDto);
+        }
+
+        return reviewDtoList;
     }
 }
