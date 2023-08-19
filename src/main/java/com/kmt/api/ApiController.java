@@ -1,55 +1,78 @@
-package com.kmt.api;
+package com.kmt.service;
 
-import com.kmt.dto.RestaurantDTO;
+import com.kmt.domain.Restaurant;
+import com.kmt.domain.Review;
 import com.kmt.dto.RestaurantRegisterReqDto;
 import com.kmt.dto.RestaurantResDto;
-import com.kmt.service.Service;
-import io.swagger.annotations.ApiOperation;
-import com.kmt.domain.Restaurant;
+import com.kmt.repository.RestaurantRepository;
+import com.kmt.repository.ReviewRepository;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.*;
-import java.util.ArrayList;
+import org.springframework.transaction.annotation.Transactional;
+
 import java.util.List;
 
-@Slf4j
-@RequestMapping
-@CrossOrigin(origins = "http://localhost:3000")
-@RestController
+@org.springframework.stereotype.Service
+@Transactional(readOnly = true)
 @RequiredArgsConstructor
-public class ApiController {
+public class Service {
 
-    private final Service service;
+    private final RestaurantRepository restaurantRepository;
 
-    @ApiOperation("식당 등록")
-    @PostMapping("/restaurants")
-    public RestaurantResDto registerRestaurant(@RequestBody final RestaurantRegisterReqDto restaurantRegisterReqDto) {
-        return service.registerRestaurant(restaurantRegisterReqDto);
+    private final ReviewRepository reviewRepository;
+
+    @Transactional
+    public String add(Restaurant restaurant){
+        return restaurant.getName();
     }
 
-    @GetMapping("/restaurants")
-    public List<RestaurantDTO>  restaurantList() {
 
-        List<RestaurantDTO> restaurantDTOList = new ArrayList<>();
+    public List<Restaurant> findRestaurants() {
+        return restaurantRepository.findAll();
+    }
 
-        List<Restaurant> restaurants = service.findRestaurants();
+    public List<Review> findReviews(Long id) {
+        return reviewRepository.findByRestaurantId(id);
+    }
 
-        for (Restaurant restaurant : restaurants) {
-            float rate = service.getRate(restaurant);
-            int deliveryTime = service.getDeliveryTimeAverage(restaurant);
+    public float getRate(Restaurant restaurant) {
+        float rate, rateSum = 0;
 
-            RestaurantDTO restaurantDTO = new RestaurantDTO(
-                    restaurant.getId(),
-                    restaurant.getName(),
-                    rate,
-                    deliveryTime,
-                    restaurant.getLatitude(),
-                    restaurant.getLongitude()
-            );
+        List<Review> reviews = reviewRepository.findByRestaurantId(restaurant.getId());
 
-            restaurantDTOList.add(restaurantDTO);
+        for (Review review : reviews) {
+            rateSum += review.getRate();
         }
 
-        return restaurantDTOList;
+        rate = rateSum / reviews.size();
+
+        return rate;
+    }
+
+    public int getDeliveryTimeAverage(Restaurant restaurant) {
+
+        int deliveryAverage;
+        float deliverySum = 0;
+
+        List<Review> reviews = reviewRepository.findByRestaurantId(restaurant.getId());
+
+        for (Review review : reviews) {
+            deliverySum += review.getDeliveryTime();
+        }
+
+        deliveryAverage = (int) deliverySum / reviews.size();
+
+        return deliveryAverage;
+    }
+
+    public RestaurantResDto registerRestaurant(final RestaurantRegisterReqDto restaurantRegisterReqDto) {
+        String name = restaurantRegisterReqDto.getName();
+        Double latitude = restaurantRegisterReqDto.getLatitude();
+        Double longitude = restaurantRegisterReqDto.getLongitude();
+
+        Restaurant restaurant = Restaurant.newInstance(name, latitude, longitude);
+        restaurantRepository.save(restaurant);
+
+        return RestaurantResDto.of(restaurant);
     }
 }
+
