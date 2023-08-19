@@ -7,16 +7,14 @@ import com.kmt.dto.RestaurantResDto;
 import com.kmt.repository.RestaurantRepository;
 import com.kmt.repository.ReviewRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 
-@Service
+@org.springframework.stereotype.Service
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
-public class RestaurantService {
+public class Service {
 
     private final RestaurantRepository restaurantRepository;
 
