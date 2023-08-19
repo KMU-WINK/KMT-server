@@ -1,6 +1,7 @@
 package com.kmt.domain;
 
 import com.sun.istack.NotNull;
+import com.sun.istack.Nullable;
 import lombok.Getter;
 
 import javax.persistence.*;
@@ -16,11 +17,13 @@ public class Review {
     @NotNull
     private float rate;
 
+    @Nullable
     private String comment;
 
     @NotNull
     private boolean isDelivery;
 
+    @Nullable
     private int deliveryTime;
 
     @ManyToOne(fetch = FetchType.LAZY)

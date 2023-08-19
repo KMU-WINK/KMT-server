@@ -1,7 +1,5 @@
 package com.kmt.repository;
 
-
-
 import com.kmt.domain.Restaurant;
 import org.springframework.data.jpa.repository.JpaRepository;
 

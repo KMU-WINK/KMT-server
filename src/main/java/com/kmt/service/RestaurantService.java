@@ -2,6 +2,8 @@ package com.kmt.service;
 
 import com.kmt.domain.Restaurant;
 import com.kmt.domain.Review;
+import com.kmt.dto.RestaurantRegisterReqDto;
+import com.kmt.dto.RestaurantResDto;
 import com.kmt.repository.RestaurantRepository;
 import com.kmt.repository.ReviewRepository;
 import lombok.RequiredArgsConstructor;
@@ -52,7 +54,7 @@ public class RestaurantService {
         int deliveryAverage;
         float deliverySum = 0;
 
-        //restaurantId를 통해 모든 rate 가져와서 더함
+        //restaurantId를` 통해 모든 rate 가져와서 더함
         List<Review> reviews = reviewRepository.findByRestaurantId(restaurant.getId());
 
         for (Review review : reviews) {
@@ -64,5 +66,14 @@ public class RestaurantService {
         return deliveryAverage;
     }
 
+    public RestaurantResDto registerRestaurant(final RestaurantRegisterReqDto restaurantRegisterReqDto) {
+        String name = restaurantRegisterReqDto.getName();
+        Double latitude = restaurantRegisterReqDto.getLatitude();
+        Double longitude = restaurantRegisterReqDto.getLongitude();
 
+        Restaurant restaurant = Restaurant.newInstance(name, latitude, longitude);
+        restaurantRepository.save(restaurant);
+
+        return RestaurantResDto.of(restaurant);
+    }
 }

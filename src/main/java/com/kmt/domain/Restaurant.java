@@ -5,13 +5,18 @@ import javax.persistence.*;
 import com.sun.istack.NotNull;
 import lombok.Getter;
 
-import java.util.ArrayList;
-import java.util.List;
-
 @Entity
 @Table(name="restaurant_tb")
 @Getter
 public class Restaurant {
+
+    public Restaurant() {}
+
+    private Restaurant(final String name, final Double latitude, final Double longitude) {
+        this.name = name;
+        this.latitude = latitude;
+        this.longitude = longitude;
+    }
 
     @Id @GeneratedValue
     private Long id;
@@ -20,11 +25,12 @@ public class Restaurant {
     private String name;
 
     @NotNull
-    private float rating;
+    private Double latitude;
 
     @NotNull
-    private String location;
+    private Double longitude;
 
-    @OneToMany(mappedBy = "restaurant")
-    private List<Review> reviews = new ArrayList<>();
+    public static Restaurant newInstance(final String name, final Double latitude, final Double longitude) {
+        return new Restaurant(name, latitude, longitude);
+    }
 }
