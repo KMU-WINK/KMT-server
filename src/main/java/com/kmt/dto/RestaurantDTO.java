@@ -1,5 +1,6 @@
 package com.kmt.dto;
 
+import com.kmt.domain.Restaurant;
 import lombok.*;
 
 @Getter
@@ -9,5 +10,12 @@ import lombok.*;
 @AllArgsConstructor
 public class RestaurantDTO {
 
+    private Long id;
     private String name;
+    private float raitng;
+    private int deliveryTime;
+    private double latitude;
+    private double longtitude;
+
+
 }
