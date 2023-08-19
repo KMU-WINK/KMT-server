@@ -12,8 +12,8 @@ public class RestaurantDTO {
 
     private Long id;
     private String name;
-    private float raitng;
-    private int deliveryTime;
+    private Float raitng;
+    private Integer deliveryTime;
     private double latitude;
     private double longitude;
 

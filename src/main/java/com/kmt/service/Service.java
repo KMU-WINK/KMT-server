@@ -37,7 +37,7 @@ public class Service {
     }
 
     //평점 가져오기
-    public float getRate(Restaurant restaurant) {
+    public Float getRate(Restaurant restaurant) {
         float rate, rateSum = 0;
 
         //restaurantId를 통해 모든 rate 가져와서 더함
@@ -47,13 +47,17 @@ public class Service {
             rateSum += review.getRate();
         }
 
+        if (reviews.size() == 0) {
+            return null;
+        }
+
         rate = rateSum / reviews.size();
 
         return rate;
     }
 
     //평균 배달 시간
-    public int getDeliveryTimeAverage(Restaurant restaurant) {
+    public Integer getDeliveryTimeAverage(Restaurant restaurant) {
 
         int deliveryAverage;
         float deliverySum = 0;
@@ -63,6 +67,10 @@ public class Service {
 
         for (Review review : reviews) {
             deliverySum += review.getDeliveryTime();
+        }
+
+        if (reviews.size() == 0) {
+            return null;
         }
 
         deliveryAverage = (int) deliverySum / reviews.size();

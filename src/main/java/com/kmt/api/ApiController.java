@@ -34,8 +34,8 @@ public class ApiController {
         List<Restaurant> restaurants = service.findRestaurants();
 
         for (Restaurant restaurant : restaurants) {
-            float rate = service.getRate(restaurant);
-            int deliveryTime = service.getDeliveryTimeAverage(restaurant);
+            Float rate = service.getRate(restaurant);
+            Integer deliveryTime = service.getDeliveryTimeAverage(restaurant);
 
             RestaurantDTO restaurantDTO = new RestaurantDTO(
                     restaurant.getId(),
