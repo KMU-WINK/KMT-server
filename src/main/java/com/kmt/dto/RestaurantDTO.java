@@ -15,6 +15,6 @@ public class RestaurantDTO {
     private float raitng;
     private int deliveryTime;
     private double latitude;
-    private double longtitude;
+    private double longitude;
 
 }

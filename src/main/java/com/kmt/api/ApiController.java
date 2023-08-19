@@ -3,6 +3,7 @@ package com.kmt.api;
 import com.kmt.dto.RestaurantDTO;
 import com.kmt.dto.RestaurantRegisterReqDto;
 import com.kmt.dto.RestaurantResDto;
+import com.kmt.dto.ReviewReqDto;
 import com.kmt.service.Service;
 import io.swagger.annotations.ApiOperation;
 import com.kmt.domain.Restaurant;
@@ -51,5 +52,11 @@ public class ApiController {
         }
 
         return restaurantDTOList;
+    }
+
+    @ApiOperation("리뷰 등록")
+    @PostMapping("/review")
+    public void postReview(@RequestBody final ReviewReqDto reviewReqDto) {
+        service.postReview(reviewReqDto);
     }
 }

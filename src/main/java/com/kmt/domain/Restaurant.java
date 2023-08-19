@@ -11,7 +11,6 @@ import lombok.Getter;
 @Entity
 @Builder
 @AllArgsConstructor
-@Table(name="restaurant_tb")
 @Getter
 public class Restaurant {
     public Restaurant() {}
@@ -22,7 +21,7 @@ public class Restaurant {
         this.longitude = longitude;
     }
 
-    @Id @GeneratedValue
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @NotNull
@@ -44,7 +43,7 @@ public class Restaurant {
                 .id(dto.getId())
                 .name(dto.getName())
                 .latitude(dto.getLatitude())
-                .longitude(dto.getLongtitude())
+                .longitude(dto.getLongitude())
                 .build();
     }
 }
